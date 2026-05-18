@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест | Claude API Course</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); min-height: 100vh; color: #fff; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        
+        header { padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; background: rgba(15, 12, 41, 0.95); }
+        header .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; max-width: 1200px; }
+        .logo { display: flex; align-items: center; gap: 12px; }
+        .logo i { font-size: 2.2rem; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .logo h1 { font-size: 1.5rem; font-weight: 700; }
+        .logo p { font-size: 0.7rem; opacity: 0.7; }
+        nav ul { display: flex; list-style: none; gap: 2rem; }
+        nav a { color: #fff; text-decoration: none; font-weight: 500; transition: all 0.3s; }
+        nav a:hover { color: #a78bfa; }
+        nav a.active { color: #a78bfa; position: relative; }
+        nav a.active::after { content: ''; position: absolute; bottom: -8px; left: 0; width: 100%; height: 2px; background: linear-gradient(135deg, #667eea, #764ba2); }
+        
+        .test-container { padding: 40px 0 60px; }
+        .test-header { text-align: center; margin-bottom: 40px; }
+        .test-header h1 { font-size: 2.5rem; background: linear-gradient(135deg, #fff, #a78bfa); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .test-header p { opacity: 0.7; margin-top: 10px; }
+        
+        .test-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-radius: 30px; padding: 40px; border: 1px solid rgba(255,255,255,0.1); }
+        .question { margin-bottom: 35px; padding-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .question-text { font-size: 1rem; font-weight: 600; margin-bottom: 15px; color: #fff; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .question-type { display: inline-block; background: rgba(102,126,234,0.3); padding: 2px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: normal; }
+        .options { margin-left: 10px; }
+        .option { display: block; margin: 10px 0; cursor: pointer; padding: 8px 12px; border-radius: 12px; transition: background 0.3s; }
+        .option:hover { background: rgba(255,255,255,0.05); }
+        .option input { margin-right: 12px; width: 18px; height: 18px; cursor: pointer; }
+        
+        .text-input { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: #fff; font-family: 'Inter', sans-serif; font-size: 0.9rem; margin-top: 10px; }
+        .text-input:focus { outline: none; border-color: #a78bfa; }
+        
+        .match-question { margin: 15px 0; }
+        .match-row { display: flex; gap: 20px; margin-bottom: 15px; flex-wrap: wrap; align-items: center; }
+        .match-left { flex: 1; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; }
+        .match-right select { padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.3); color: #fff; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; min-width: 200px; }
+        .match-right select:hover { border-color: #a78bfa; }
+        
+        .test-actions { display: flex; gap: 15px; justify-content: center; margin-top: 30px; flex-wrap: wrap; }
+        .btn { display: inline-flex; align-items: center; gap: 10px; padding: 12px 28px; font-size: 1rem; font-weight: 600; border-radius: 50px; text-decoration: none; transition: all 0.3s; cursor: pointer; border: none; }
+        .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102,126,234,0.4); }
+        .btn-secondary { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; }
+        .btn-secondary:hover { background: rgba(255,255,255,0.2); }
+        
+        .test-result { margin-top: 30px; padding: 20px; border-radius: 20px; text-align: center; display: none; }
+        .test-result.success { background: rgba(76, 175, 80, 0.2); border: 1px solid #4caf50; display: block; }
+        .test-result.fail { background: rgba(244, 67, 54, 0.2); border: 1px solid #f44336; display: block; }
+        
+        .progress-bar { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-bottom: 30px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(135deg, #667eea, #764ba2); width: 0%; transition: width 0.3s; border-radius: 4px; }
+        
+        footer { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; margin-top: 20px; }
+        footer p { opacity: 0.5; font-size: 0.85rem; }
+        
+        @media (max-width: 768px) {
+            header .container { flex-direction: column; text-align: center; }
+            nav ul { justify-content: center; gap: 1.5rem; }
+            .test-card { padding: 20px; }
+            .match-row { flex-direction: column; align-items: stretch; }
+            .match-right select { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo"><i class="fas fa-brain"></i><div><h1>Claude API Курс</h1></div></div>
+            <nav><ul><li><a href="index.html">Главная</a></li><li><a href="lect.html">Лекции</a></li><li><a href="lab.html">Лабораторные</a></li><li><a href="test.html" class="active">Тест</a></li></ul></nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <div class="test-container">
+                <div class="test-header">
+                    <h1>📝 Итоговый тест (30 вопросов)</h1>
+                    <p>4 типа вопросов: выбор одного ответа, выбор нескольких ответов, открытый ответ, соответствие</p>
+                </div>
+                <div class="test-card">
+                    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+                    <form id="quizForm">
+                        
+                        <!-- ВОПРОС 1 - Выбор одного ответа -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Выбор одного ответа</span> 1. В каком году была основана компания Anthropic?</div>
+                            <div class="options">
+                                <label class="option"><input type="radio" name="q1" value="a"> A) 2019</label>
+                                <label class="option"><input type="radio" name="q1" value="b"> B) 2020</label>
+                                <label class="option"><input type="radio" name="q1" value="c"> C) 2021</label>
+                                <label class="option"><input type="radio" name="q1" value="d"> D) 2022</label>
+                            </div>
+                        </div>
+                        
+                        <!-- ВОПРОС 2 - Выбор нескольких ответов -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Выбор нескольких ответов</span> 2. Какие модели входят в семейство Claude 3? (Выберите все верные)</div>
+                            <div class="options">
+                                <label class="option"><input type="checkbox" name="q2_a" value="a"> A) Claude 3 Haiku</label>
+                                <label class="option"><input type="checkbox" name="q2_b" value="b"> B) Claude 3 Sonnet</label>
+                                <label class="option"><input type="checkbox" name="q2_c" value="c"> C) Claude 3 Opus</label>
+                                <label class="option"><input type="checkbox" name="q2_d" value="d"> D) Claude 3 Nova</label>
+                            </div>
+                        </div>
+                        
+                        <!-- ВОПРОС 3 - Открытый ответ -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Открытый ответ</span> 3. Напишите команду для установки библиотеки anthropic в Python.</div>
+                            <input type="text" class="text-input" name="q3" placeholder="Введите ответ...">
+                        </div>
+                        
+                        <!-- ВОПРОС 4 - Выбор одного ответа -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Выбор одного ответа</span> 4. Какой метод обучения использует компания Anthropic вместо традиционного RLHF?</div>
+                            <div class="options">
+                                <label class="option"><input type="radio" name="q4" value="a"> A) RLAIF (Reinforcement Learning from AI Feedback)</label>
+                                <label class="option"><input type="radio" name="q4" value="b"> B) Supervised Fine-Tuning</label>
+                                <label class="option"><input type="radio" name="q4" value="c"> C) Zero-shot Learning</label>
+                                <label class="option"><input type="radio" name="q4" value="d"> D) Transfer Learning</label>
+                            </div>
+                        </div>
+                        
+                        <!-- ВОПРОС 5 - Соответствие -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Вопрос на соответствие</span> 5. Установите соответствие между моделью Claude и её характеристикой.</div>
+                            <div class="match-question">
+                                <div class="match-row"><div class="match-left">1. Claude 3 Haiku</div><div class="match-right"><select name="match5_1"><option value="">-- Выберите --</option><option value="a">A) Самая мощная, но медленная и дорогая</option><option value="b">B) Самая быстрая и дешёвая</option><option value="c">C) Оптимальный баланс скорости и качества</option></select></div></div>
+                                <div class="match-row"><div class="match-left">2. Claude 3 Sonnet</div><div class="match-right"><select name="match5_2"><option value="">-- Выберите --</option><option value="a">A) Самая мощная, но медленная и дорогая</option><option value="b">B) Самая быстрая и дешёвая</option><option value="c">C) Оптимальный баланс скорости и качества</option></select></div></div>
+                                <div class="match-row"><div class="match-left">3. Claude 3 Opus</div><div class="match-right"><select name="match5_3"><option value="">-- Выберите --</option><option value="a">A) Самая мощная, но медленная и дорогая</option><option value="b">B) Самая быстрая и дешёвая</option><option value="c">C) Оптимальный баланс скорости и качества</option></select></div></div>
+                            </div>
+                        </div>
+                        
+                        <!-- ВОПРОС 6 - Выбор одного ответа -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Выбор одного ответа</span> 6. Какая модель Claude является самой быстрой и дешёвой?</div>
+                            <div class="options">
+                                <label class="option"><input type="radio" name="q6" value="a"> A) Claude 3 Opus</label>
+                                <label class="option"><input type="radio" name="q6" value="b"> B) Claude 3 Sonnet</label>
+                                <label class="option"><input type="radio" name="q6" value="c"> C) Claude 3 Haiku</label>
+                                <label class="option"><input type="radio" name="q6" value="d"> D) Claude 3.5 Sonnet</label>
+                            </div>
+                        </div>
+                        
+                        <!-- ВОПРОС 7 - Выбор нескольких ответов -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Выбор нескольких ответов</span> 7. Какие форматы файлов поддерживает Claude для загрузки? (Выберите все верные)</div>
+                            <div class="options">
+                                <label class="option"><input type="checkbox" name="q7_a" value="a"> A) PDF</label>
+                                <label class="option"><input type="checkbox" name="q7_b" value="b"> B) DOCX</label>
+                                <label class="option"><input type="checkbox" name="q7_c" value="c"> C) CSV</label>
+                                <label class="option"><input type="checkbox" name="q7_d" value="d"> D) MP4</label>
+                            </div>
+                        </div>
+                        
+                        <!-- ВОПРОС 8 - Открытый ответ -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Открытый ответ</span> 8. Какое значение параметра temperature обеспечивает детерминированные (повторяющиеся) ответы? (Введите число)</div>
+                            <input type="text" class="text-input" name="q8" placeholder="Введите число...">
+                        </div>
+                        
+                        <!-- ВОПРОС 9 - Выбор одного ответа -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Выбор одного ответа</span> 9. Какой максимальный размер контекстного окна доступен для Claude через API?</div>
+                            <div class="options">
+                                <label class="option"><input type="radio" name="q9" value="a"> A) 128 000 токенов</label>
+                                <label class="option"><input type="radio" name="q9" value="b"> B) 200 000 токенов</label>
+                                <label class="option"><input type="radio" name="q9" value="c"> C) 500 000 токенов</label>
+                                <label class="option"><input type="radio" name="q9" value="d"> D) 1 000 000 токенов</label>
+                            </div>
+                        </div>
+                        
+                        <!-- ВОПРОС 10 - Соответствие -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Вопрос на соответствие</span> 10. Установите соответствие между понятием и его определением.</div>
+                            <div class="match-question">
+                                <div class="match-row"><div class="match-left">1. RLAIF</div><div class="match-right"><select name="match10_1"><option value="">-- Выберите --</option><option value="a">A) Формализованный набор принципов безопасности ИИ</option><option value="b">B) Обучение с подкреплением на основе обратной связи от ИИ</option><option value="c">C) Метод цепочки рассуждений</option></select></div></div>
+                                <div class="match-row"><div class="match-left">2. Constitutional AI</div><div class="match-right"><select name="match10_2"><option value="">-- Выберите --</option><option value="a">A) Формализованный набор принципов безопасности ИИ</option><option value="b">B) Обучение с подкреплением на основе обратной связи от ИИ</option><option value="c">C) Метод цепочки рассуждений</option></select></div></div>
+                                <div class="match-row"><div class="match-left">3. Chain-of-Thought (CoT)</div><div class="match-right"><select name="match10_3"><option value="">-- Выберите --</option><option value="a">A) Формализованный набор принципов безопасности ИИ</option><option value="b">B) Обучение с подкреплением на основе обратной связи от ИИ</option><option value="c">C) Метод цепочки рассуждений</option></select></div></div>
+                            </div>
+                        </div>
+                        
+                        <!-- ВОПРОС 11 - Выбор одного ответа -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Выбор одного ответа</span> 11. Какой параметр API отвечает за степень случайности ответов модели?</div>
+                            <div class="options">
+                                <label class="option"><input type="radio" name="q11" value="a"> A) max_tokens</label>
+                                <label class="option"><input type="radio" name="q11" value="b"> B) temperature</label>
+                                <label class="option"><input type="radio" name="q11" value="c"> C) top_p</label>
+                                <label class="option"><input type="radio" name="q11" value="d"> D) stop_sequences</label>
+                            </div>
+                        </div>
+                        
+                        <!-- ВОПРОС 12 - Выбор нескольких ответов -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Выбор нескольких ответов</span> 12. На какие типы запросов Claude запрограммирован отвечать отказом? (Выберите все верные)</div>
+                            <div class="options">
+                                <label class="option"><input type="checkbox" name="q12_a" value="a"> A) Медицинская диагностика</label>
+                                <label class="option"><input type="checkbox" name="q12_b" value="b"> B) Финансовые рекомендации</label>
+                                <label class="option"><input type="checkbox" name="q12_c" value="c"> C) Вопросы о погоде</label>
+                                <label class="option"><input type="checkbox" name="q12_d" value="d"> D) Инструкции по изготовлению оружия</label>
+                            </div>
+                        </div>
+                        
+                        <!-- ВОПРОС 13 - Открытый ответ -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Открытый ответ</span> 13. Какой XML-тег рекомендуется использовать в Claude для записи промежуточных шагов рассуждения (Chain-of-Thought)?</div>
+                            <input type="text" class="text-input" name="q13" placeholder="Введите ответ...">
+                        </div>
+                        
+                        <!-- ВОПРОС 14 - Выбор одного ответа -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Выбор одного ответа</span> 14. Что из перечисленного НЕ умеет делать Claude?</div>
+                            <div class="options">
+                                <label class="option"><input type="radio" name="q14" value="a"> A) Анализировать текстовые документы PDF</label>
+                                <label class="option"><input type="radio" name="q14" value="b"> B) Генерировать код на Python</label>
+                                <label class="option"><input type="radio" name="q14" value="c"> C) Распознавать объекты на изображениях</label>
+                                <label class="option"><input type="radio" name="q14" value="d"> D) Работать с контекстом до 200K токенов</label>
+                            </div>
+                        </div>
+                        
+                        <!-- ВОПРОС 15 - Соответствие -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Вопрос на соответствие</span> 15. Установите соответствие между параметром API и его функцией.</div>
+                            <div class="match-question">
+                                <div class="match-row"><div class="match-left">1. temperature</div><div class="match-right"><select name="match15_1"><option value="">-- Выберите --</option><option value="a">A) Максимальная длина ответа</option><option value="b">B) Степень случайности ответов</option><option value="c">C) Последовательности для остановки генерации</option></select></div></div>
+                                <div class="match-row"><div class="match-left">2. max_tokens</div><div class="match-right"><select name="match15_2"><option value="">-- Выберите --</option><option value="a">A) Максимальная длина ответа</option><option value="b">B) Степень случайности ответов</option><option value="c">C) Последовательности для остановки генерации</option></select></div></div>
+                                <div class="match-row"><div class="match-left">3. stop_sequences</div><div class="match-right"><select name="match15_3"><option value="">-- Выберите --</option><option value="a">A) Максимальная длина ответа</option><option value="b">B) Степень случайности ответов</option><option value="c">C) Последовательности для остановки генерации</option></select></div></div>
+                            </div>
+                        </div>
+                        
+                        <!-- ВОПРОС 16 - Выбор одного ответа -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Выбор одного ответа</span> 16. Какова стоимость использования Claude 3 Haiku за 1 миллион входных токенов?</div>
+                            <div class="options">
+                                <label class="option"><input type="radio" name="q16" value="a"> A) $0.25</label>
+                                <label class="option"><input type="radio" name="q16" value="b"> B) $3.00</label>
+                                <label class="option"><input type="radio" name="q16" value="c"> C) $15.00</label>
+                                <label class="option"><input type="radio" name="q16" value="d"> D) $75.00</label>
+                            </div>
+                        </div>
+                        
+                        <!-- ВОПРОС 17 - Выбор нескольких ответов -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Выбор нескольких ответов</span> 17. Какие параметры API Claude можно настраивать? (Выберите все верные)</div>
+                            <div class="options">
+                                <label class="option"><input type="checkbox" name="q17_a" value="a"> A) temperature</label>
+                                <label class="option"><input type="checkbox" name="q17_b" value="b"> B) max_tokens</label>
+                                <label class="option"><input type="checkbox" name="q17_c" value="c"> C) top_p</label>
+                                <label class="option"><input type="checkbox" name="q17_d" value="d"> D) stop_sequences</label>
+                            </div>
+                        </div>
+                        
+                        <!-- ВОПРОС 18 - Открытый ответ -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Открытый ответ</span> 18. Сколько сообщений в бесплатной версии Claude.ai можно отправить за 4 часа? (Введите число)</div>
+                            <input type="text" class="text-input" name="q18" placeholder="Введите число...">
+                        </div>
+                        
+                        <!-- ВОПРОС 19 - Выбор одного ответа -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Выбор одного ответа</span> 19. Какова стоимость подписки Claude Pro?</div>
+                            <div class="options">
+                                <label class="option"><input type="radio" name="q19" value="a"> A) $10 в месяц</label>
+                                <label class="option"><input type="radio" name="q19" value="b"> B) $20 в месяц</label>
+                                <label class="option"><input type="radio" name="q19" value="c"> C) $30 в месяц</label>
+                                <label class="option"><input type="radio" name="q19" value="d"> D) $50 в месяц</label>
+                            </div>
+                        </div>
+                        
+                        <!-- ВОПРОС 20 - Соответствие -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Вопрос на соответствие</span> 20. Установите соответствие между компанией и объёмом инвестиций в Anthropic.</div>
+                            <div class="match-question">
+                                <div class="match-row"><div class="match-left">1. Google</div><div class="match-right"><select name="match20_1"><option value="">-- Выберите --</option><option value="a">A) $4 млрд</option><option value="b">B) $300 млн</option><option value="c">C) $500 млн</option></select></div></div>
+                                <div class="match-row"><div class="match-left">2. Amazon</div><div class="match-right"><select name="match20_2"><option value="">-- Выберите --</option><option value="a">A) $4 млрд</option><option value="b">B) $300 млн</option><option value="c">C) $500 млн</option></select></div></div>
+                            </div>
+                        </div>
+                        
+                        <!-- ВОПРОС 21 - Выбор одного ответа -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Выбор одного ответа</span> 21. Какой формат тегов рекомендуется использовать для структурирования промптов в Claude?</div>
+                            <div class="options">
+                                <label class="option"><input type="radio" name="q21" value="a"> A) HTML</label>
+                                <label class="option"><input type="radio" name="q21" value="b"> B) Markdown</label>
+                                <label class="option"><input type="radio" name="q21" value="c"> C) JSON</label>
+                                <label class="option"><input type="radio" name="q21" value="d"> D) XML</label>
+                            </div>
+                        </div>
+                        
+                        <!-- ВОПРОС 22 - Выбор нескольких ответов -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Выбор нескольких ответов</span> 22. Какие компании являются стратегическими инвесторами Anthropic? (Выберите все верные)</div>
+                            <div class="options">
+                                <label class="option"><input type="checkbox" name="q22_a" value="a"> A) Google</label>
+                                <label class="option"><input type="checkbox" name="q22_b" value="b"> B) Amazon</label>
+                                <label class="option"><input type="checkbox" name="q22_c" value="c"> C) Microsoft</label>
+                                <label class="option"><input type="checkbox" name="q22_d" value="d"> D) Salesforce</label>
+                            </div>
+                        </div>
+                        
+                        <!-- ВОПРОС 23 - Открытый ответ -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Открытый ответ</span> 23. Как называется метод, при котором модель генерирует промежуточные рассуждения перед ответом?</div>
+                            <input type="text" class="text-input" name="q23" placeholder="Введите ответ...">
+                        </div>
+                        
+                        <!-- ВОПРОС 24 - Выбор одного ответа -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Выбор одного ответа</span> 24. Что такое сикофантия (sycophancy) в контексте LLM?</div>
+                            <div class="options">
+                                <label class="option"><input type="radio" name="q24" value="a"> A) Способность модели генерировать длинные ответы</label>
+                                <label class="option"><input type="radio" name="q24" value="b"> B) Склонность модели подстраиваться под убеждения пользователя</label>
+                                <label class="option"><input type="radio" name="q24" value="c"> C) Умение модели писать программный код</label>
+                                <label class="option"><input type="radio" name="q24" value="d"> D) Скорость обработки запросов</label>
+                            </div>
+                        </div>
+                        
+                        <!-- ВОПРОС 25 - Соответствие -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Вопрос на соответствие</span> 25. Установите соответствие между типом задачи и рекомендуемой моделью Claude.</div>
+                            <div class="match-question">
+                                <div class="match-row"><div class="match-left">1. Высокоскоростная модерация контента</div><div class="match-right"><select name="match25_1"><option value="">-- Выберите --</option><option value="a">A) Claude 3 Opus</option><option value="b">B) Claude 3 Sonnet</option><option value="c">C) Claude 3 Haiku</option></select></div></div>
+                                <div class="match-row"><div class="match-left">2. Программная инженерия и анализ документов</div><div class="match-right"><select name="match25_2"><option value="">-- Выберите --</option><option value="a">A) Claude 3 Opus</option><option value="b">B) Claude 3 Sonnet</option><option value="c">C) Claude 3 Haiku</option></select></div></div>
+                                <div class="match-row"><div class="match-left">3. Научные исследования и юридический анализ</div><div class="match-right"><select name="match25_3"><option value="">-- Выберите --</option><option value="a">A) Claude 3 Opus</option><option value="b">B) Claude 3 Sonnet</option><option value="c">C) Claude 3 Haiku</option></select></div></div>
+                            </div>
+                        </div>
+                        
+                        <!-- ВОПРОС 26 - Выбор одного ответа -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Выбор одного ответа</span> 26. Какая архитектура лежит в основе всех современных LLM, включая Claude?</div>
+                            <div class="options">
+                                <label class="option"><input type="radio" name="q26" value="a"> A) Рекуррентная нейронная сеть (RNN)</label>
+                                <label class="option"><input type="radio" name="q26" value="b"> B) Свёрточная нейронная сеть (CNN)</label>
+                                <label class="option"><input type="radio" name="q26" value="c"> C) Трансформер (Transformer)</label>
+                                <label class="option"><input type="radio" name="q26" value="d"> D) Генеративно-состязательная сеть (GAN)</label>
+                            </div>
+                        </div>
+                        
+                        <!-- ВОПРОС 27 - Выбор одного ответа -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Выбор одного ответа</span> 27. Какой инструмент используется для программного взаимодействия с Claude на Python?</div>
+                            <div class="options">
+                                <label class="option"><input type="radio" name="q27" value="a"> A) Библиотека openai</label>
+                                <label class="option"><input type="radio" name="q27" value="b"> B) Библиотека anthropic</label>
+                                <label class="option"><input type="radio" name="q27" value="c"> C) Библиотека transformers</label>
+                                <label class="option"><input type="radio" name="q27" value="d"> D) Библиотека tensorflow</label>
+                            </div>
+                        </div>
+                        
+                        <!-- ВОПРОС 28 - Открытый ответ -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Открытый ответ</span> 28. Как называется формализованный набор принципов, которым следует Claude при генерации ответов?</div>
+                            <input type="text" class="text-input" name="q28" placeholder="Введите ответ...">
+                        </div>
+                        
+                        <!-- ВОПРОС 29 - Выбор одного ответа -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Выбор одного ответа</span> 29. Какая модель Claude является самой мощной, но самой медленной и дорогой?</div>
+                            <div class="options">
+                                <label class="option"><input type="radio" name="q29" value="a"> A) Claude 3 Opus</label>
+                                <label class="option"><input type="radio" name="q29" value="b"> B) Claude 3 Sonnet</label>
+                                <label class="option"><input type="radio" name="q29" value="c"> C) Claude 3 Haiku</label>
+                                <label class="option"><input type="radio" name="q29" value="d"> D) Все модели одинаковы</label>
+                            </div>
+                        </div>
+                        
+                        <!-- ВОПРОС 30 - Выбор одного ответа -->
+                        <div class="question">
+                            <div class="question-text"><span class="question-type">Выбор одного ответа</span> 30. Кто из перечисленных является основателем Anthropic, ранее работавшим в OpenAI?</div>
+                            <div class="options">
+                                <label class="option"><input type="radio" name="q30" value="a"> A) Сэм Альтман</label>
+                                <label class="option"><input type="radio" name="q30" value="b"> B) Дарио Амодеи</label>
+                                <label class="option"><input type="radio" name="q30" value="c"> C) Илон Маск</label>
+                                <label class="option"><input type="radio" name="q30" value="d"> D) Джеффри Хинтон</label>
+                            </div>
+                        </div>
+                        
+                        <div class="test-actions">
+                            <button type="button" class="btn btn-primary" onclick="checkAnswers()">✅ Проверить ответы</button>
+                            <button type="reset" class="btn btn-secondary" onclick="resetQuiz()">🔄 Сбросить всё</button>
+                        </div>
+                    </form>
+                    <div id="result" class="test-result"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="container"><p>© 2025 | Все материалы могут быть свободно использованы в образовательных целях</p></div>
+    </footer>
+    <script>
+        // ================================================
+        // ПРАВИЛЬНЫЕ ОТВЕТЫ
+        // ================================================
+        
+        const correctAnswers = {
+            // Выбор одного ответа
+            q1: 'c', q4: 'a', q6: 'c', q9: 'd', q11: 'b', q14: 'c', q16: 'a', q19: 'b', q21: 'd', q24: 'b', q26: 'c', q27: 'b', q29: 'a', q30: 'b',
+            
+            // Выбор нескольких ответов
+            q2: ['a', 'b', 'c'],
+            q7: ['a', 'b', 'c'],
+            q12: ['a', 'b', 'd'],
+            q17: ['a', 'b', 'c', 'd'],
+            q22: ['a', 'b', 'd'],
+            
+            // Открытые ответы
+            q3: ['pip install anthropic', 'pip install anthropic', 'python -m pip install anthropic'],
+            q8: ['0', '0.0', 'ноль'],
+            q13: ['scratchpad', '<scratchpad>', 'scratchpad', 'тег scratchpad'],
+            q18: ['40', '40 сообщений', 'сорок'],
+            q23: ['chain-of-thought', 'cot', 'цепочка рассуждений', 'CoT'],
+            q28: ['конституция ии', 'constitutional ai', 'конституция', 'constitutional'],
+            
+            // Соответствие
+            match5: {1: 'b', 2: 'c', 3: 'a'},
+            match10: {1: 'b', 2: 'a', 3: 'c'},
+            match15: {1: 'b', 2: 'a', 3: 'c'},
+            match20: {1: 'b', 2: 'a'},
+            match25: {1: 'c', 2: 'b', 3: 'a'}
+        };
+        
+        // ================================================
+        // ПРОГРЕСС-БАР
+        // ================================================
+        
+        function updateProgress() {
+            let total = 0;
+            let answered = 0;
+            
+            // Вопросы с radio (1,4,6,9,11,14,16,19,21,24,26,27,29,30) - 14 вопросов
+            const radioQuestions = [1,4,6,9,11,14,16,19,21,24,26,27,29,30];
+            for (let i of radioQuestions) {
+                total++;
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selected) answered++;
+            }
+            
+            // Вопросы с checkbox (2,7,12,17,22) - 5 вопросов
+            const checkboxQuestions = [2,7,12,17,22];
+            for (let i of checkboxQuestions) {
+                total++;
+                const checkboxes = document.querySelectorAll(`input[name^="q${i}_"]:checked`);
+                if (checkboxes.length > 0) answered++;
+            }
+            
+            // Вопросы с text (3,8,13,18,23,28) - 6 вопросов
+            const textQuestions = [3,8,13,18,23,28];
+            for (let i of textQuestions) {
+                total++;
+                const input = document.querySelector(`input[name="q${i}"]`);
+                if (input && input.value.trim() !== '') answered++;
+            }
+            
+            // Вопрос 5 (match - 3 селекта)
+            for (let i = 1; i <= 3; i++) { total++; const select = document.querySelector(`select[name="match5_${i}"]`); if (select && select.value !== '') answered++; }
+            
+            // Вопрос 10 (match - 3 селекта)
+            for (let i = 1; i <= 3; i++) { total++; const select = document.querySelector(`select[name="match10_${i}"]`); if (select && select.value !== '') answered++; }
+            
+            // Вопрос 15 (match - 3 селекта)
+            for (let i = 1; i <= 3; i++) { total++; const select = document.querySelector(`select[name="match15_${i}"]`); if (select && select.value !== '') answered++; }
+            
+            // Вопрос 20 (match - 2 селекта)
+            for (let i = 1; i <= 2; i++) { total++; const select = document.querySelector(`select[name="match20_${i}"]`); if (select && select.value !== '') answered++; }
+            
+            // Вопрос 25 (match - 3 селекта)
+            for (let i = 1; i <= 3; i++) { total++; const select = document.querySelector(`select[name="match25_${i}"]`); if (select && select.value !== '') answered++; }
+            
+            const progressPercent = (answered / total) * 100;
+            const progressFill = document.getElementById('progressFill');
+            if (progressFill) progressFill.style.width = progressPercent + '%';
+        }
+        
+        // Отслеживание изменений
+        document.querySelectorAll('input, select').forEach(el => {
+            el.addEventListener('change', updateProgress);
+            el.addEventListener('keyup', updateProgress);
+        });
+        
+        // ================================================
+        // ПРОВЕРКА ОТВЕТОВ
+        // ================================================
+        
+        function checkAnswers() {
+            let score = 0;
+            let total = 30;
+            
+            // Проверка radio вопросов
+            const radioQuestions = [1,4,6,9,11,14,16,19,21,24,26,27,29,30];
+            for (let i of radioQuestions) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selected && selected.value === correctAnswers[`q${i}`]) score++;
+            }
+            
+            // Проверка checkbox вопросов
+            const checkboxQuestions = [2,7,12,17,22];
+            for (let i of checkboxQuestions) {
+                const checkboxes = document.querySelectorAll(`input[name^="q${i}_"]:checked`);
+                const selectedValues = Array.from(checkboxes).map(cb => cb.value);
+                const correctValues = correctAnswers[`q${i}`];
+                const isCorrect = selectedValues.length === correctValues.length && correctValues.every(v => selectedValues.includes(v));
+                if (isCorrect) score++;
+            }
+            
+            // Проверка text вопросов
+            const textQuestions = [3,8,13,18,23,28];
+            for (let i of textQuestions) {
+                const input = document.querySelector(`input[name="q${i}"]`);
+                const userAnswer = input.value.trim().toLowerCase();
+                const correctValues = correctAnswers[`q${i}`];
+                let isCorrect = false;
+                for (let cv of correctValues) {
+                    if (userAnswer.includes(cv.toLowerCase()) || cv.toLowerCase() === userAnswer) {
+                        isCorrect = true;
+                        break;
+                    }
+                }
+                if (isCorrect && userAnswer !== '') score++;
+            }
+            
+            // Проверка match5
+            let match5Correct = true;
+            for (let i = 1; i <= 3; i++) { const select = document.querySelector(`select[name="match5_${i}"]`); if (select.value !== correctAnswers.match5[i]) match5Correct = false; }
+            if (match5Correct) score++;
+            
+            // Проверка match10
+            let match10Correct = true;
+            for (let i = 1; i <= 3; i++) { const select = document.querySelector(`select[name="match10_${i}"]`); if (select.value !== correctAnswers.match10[i]) match10Correct = false; }
+            if (match10Correct) score++;
+            
+            // Проверка match15
+            let match15Correct = true;
+            for (let i = 1; i <= 3; i++) { const select = document.querySelector(`select[name="match15_${i}"]`); if (select.value !== correctAnswers.match15[i]) match15Correct = false; }
+            if (match15Correct) score++;
+            
+            // Проверка match20
+            let match20Correct = true;
+            for (let i = 1; i <= 2; i++) { const select = document.querySelector(`select[name="match20_${i}"]`); if (select.value !== correctAnswers.match20[i]) match20Correct = false; }
+            if (match20Correct) score++;
+            
+            // Проверка match25
+            let match25Correct = true;
+            for (let i = 1; i <= 3; i++) { const select = document.querySelector(`select[name="match25_${i}"]`); if (select.value !== correctAnswers.match25[i]) match25Correct = false; }
+            if (match25Correct) score++;
+            
+            const percentage = (score / total) * 100;
+            const resultDiv = document.getElementById('result');
+            
+            let message = '';
+            if (percentage >= 80) {
+                resultDiv.className = 'test-result success';
+                message = `<i class="fas fa-trophy" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                          <h2>Отлично!</h2>
+                          <p>Вы набрали ${score} из ${total} баллов (${percentage}%)</p>
+                          <p>Вы блестяще усвоили материал курса!</p>`;
+            } else if (percentage >= 60) {
+                resultDiv.className = 'test-result success';
+                message = `<i class="fas fa-thumbs-up" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                          <h2>Хорошо!</h2>
+                          <p>Вы набрали ${score} из ${total} баллов (${percentage}%)</p>
+                          <p>Вы хорошо усвоили материал. Рекомендуем повторить некоторые разделы.</p>`;
+            } else if (percentage >= 40) {
+                resultDiv.className = 'test-result fail';
+                message = `<i class="fas fa-book" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                          <h2>Средний результат</h2>
+                          <p>Вы набрали ${score} из ${total} баллов (${percentage}%)</p>
+                          <p>Рекомендуем повторить лекции перед следующей попыткой.</p>`;
+            } else {
+                resultDiv.className = 'test-result fail';
+                message = `<i class="fas fa-graduation-cap" style="font-size: 2rem; margin-bottom: 10px;"></i>
+						  <h2>Стоит повторить материал</h2>
+                          <p>Вы набрали ${score} из ${total} баллов (${percentage}%)</p>
+                          <p>Рекомендуем внимательно изучить лекции и выполнить лабораторные работы.
+						  </p>`;
+            }
+            
+            resultDiv.innerHTML = message;
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function resetQuiz() {
+            document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(el => el.checked = false);
+            document.querySelectorAll('input[type="text"]').forEach(el => el.value = '');
+            document.querySelectorAll('select').forEach(el => el.value = '');
+            updateProgress();
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'none';
+            resultDiv.className = 'test-result';
+            resultDiv.innerHTML = '';
+        }
+        
+        updateProgress();
+    </script>
+</body>
+</html>
+							

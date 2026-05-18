@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторная работа №6 | Claude API Course</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); min-height: 100vh; color: #fff; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        
+        header { padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; background: rgba(15, 12, 41, 0.95); }
+        header .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; max-width: 1200px; }
+        .logo { display: flex; align-items: center; gap: 12px; }
+        .logo i { font-size: 2.2rem; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .logo h1 { font-size: 1.5rem; font-weight: 700; }
+        .logo p { font-size: 0.7rem; opacity: 0.7; }
+        nav ul { display: flex; list-style: none; gap: 2rem; }
+        nav a { color: #fff; text-decoration: none; font-weight: 500; transition: all 0.3s; }
+        nav a:hover { color: #a78bfa; }
+        
+        .lab-header { text-align: center; padding: 40px 0 20px; }
+        .lab-header h1 { font-size: 2rem; background: linear-gradient(135deg, #fff, #f093fb); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .lecture-ref { text-align: center; margin-bottom: 30px; }
+        .lecture-ref a { color: #f093fb; text-decoration: none; }
+        .lecture-ref a:hover { text-decoration: underline; }
+        .steps-container { background: rgba(255,255,255,0.05); border-radius: 20px; padding: 30px; margin-bottom: 40px; }
+        .step { display: flex; gap: 15px; margin-bottom: 15px; padding: 10px; border-radius: 10px; transition: background 0.3s; }
+        .step:hover { background: rgba(255,255,255,0.05); }
+        .step-number { width: 35px; height: 35px; background: linear-gradient(135deg, #f093fb, #f5576c); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; }
+        .step-text { flex: 1; line-height: 1.5; }
+        .code-block { background: rgba(0,0,0,0.4); padding: 12px; border-radius: 10px; font-family: monospace; font-size: 0.85rem; margin: 10px 0; overflow-x: auto; }
+        .questions-container { background: rgba(255,255,255,0.03); border-radius: 20px; padding: 30px; margin-top: 20px; border-left: 3px solid #f093fb; }
+        .questions-container h3 { margin-bottom: 20px; color: #f093fb; }
+        .questions-container li { margin: 10px 0 10px 25px; }
+        footer { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; }
+        .back-link { display: inline-block; margin-bottom: 20px; color: #a78bfa; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+        @media (max-width: 768px) { 
+            header .container { flex-direction: column; text-align: center; } 
+            nav ul { justify-content: center; gap: 1.5rem; } 
+            .step { flex-direction: column; align-items: flex-start; } 
+            .step-number { margin-bottom: 5px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+             <div class="logo"><i class="fas fa-brain"></i><div><h1>Claude API Курс</h1></div></div>
+            <nav><ul><li><a href="index.html">Главная</a></li><li><a href="lect.html">Лекции</a></li><li><a href="lab.html">Лабораторные</a></li><li><a href="test.html">Тест</a></li></ul></nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <a href="lab.html" class="back-link">← Назад к списку лабораторных работ</a>
+            <div class="lab-header">
+                <h1>Лабораторная работа №6</h1>
+            </div>
+            <div class="lecture-ref">
+                <i class="fas fa-book-open"></i> Соответствует лекции: 
+                <a href="lect.html#lecture4">Лекция №4 — Программный интерфейс (API) моделей Claude</a>
+            </div>
+            <div class="steps-container">
+                <h2 style="margin-bottom: 25px; text-align: center;">🎯 30 шагов выполнения</h2>
+                <div class="step"><div class="step-number">1</div><div class="step-text">Откройте терминал (Command Prompt на Windows или Terminal на macOS/Linux).</div></div>
+                <div class="step"><div class="step-number">2</div><div class="step-text">Убедитесь, что Python версии 3.9 или выше установлен: выполните команду `python --version`.</div></div>
+                <div class="step"><div class="step-number">3</div><div class="step-text">Если Python не установлен, скачайте его с официального сайта python.org и установите.</div></div>
+                <div class="step"><div class="step-number">4</div><div class="step-text">В терминале выполните команду: `pip install anthropic`.</div></div>
+                <div class="step"><div class="step-number">5</div><div class="step-text">Дождитесь завершения установки (появится сообщение «Successfully installed»).</div></div>
+                <div class="step"><div class="step-number">6</div><div class="step-text">Создайте папку на рабочем столе с именем `claude_lab6`.</div></div>
+                <div class="step"><div class="step-number">7</div><div class="step-text">Откройте текстовый редактор (VS Code, PyCharm или Блокнот).</div></div>
+                <div class="step"><div class="step-number">8</div><div class="step-text">Создайте файл `config.py` и вставьте код: `ANTHROPIC_API_KEY = "sk-ant-..."`</div></div>
+                <div class="step"><div class="step-number">9</div><div class="step-text">Замените `"sk-ant-..."` на ваш реальный API-ключ (получите на console.anthropic.com).</div></div>
+                <div class="step"><div class="step-number">10</div><div class="step-text">Сохраните файл в папку `claude_lab6`.</div></div>
+                <div class="step"><div class="step-number">11</div><div class="step-text">Создайте файл `first_request.py` с кодом из примера ниже.</div></div>
+                <div class="step"><div class="step-number">12</div><div class="step-text"><div class="code-block">
+import anthropic<br>
+from config import ANTHROPIC_API_KEY<br><br>
+client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)<br><br>
+response = client.messages.create(<br>
+    model="claude-3-haiku-20240307",<br>
+    max_tokens=100,<br>
+    temperature=0,<br>
+    messages=[{"role": "user", "content": "Назовите три столицы европейских государств"}]<br>
+)<br><br>
+print(response.content[0].text)<br>
+print(f"Входные токены: {response.usage.input_tokens}")<br>
+print(f"Выходные токены: {response.usage.output_tokens}")
+                </div></div></div>
+                <div class="step"><div class="step-number">13</div><div class="step-text">Сохраните файл в папку `claude_lab6`.</div></div>
+                <div class="step"><div class="step-number">14</div><div class="step-text">Откройте терминал и перейдите в папку: `cd /путь/к/claude_lab6`.</div></div>
+                <div class="step"><div class="step-number">15</div><div class="step-text">Запустите скрипт: `python first_request.py`.</div></div>
+                <div class="step"><div class="step-number">16</div><div class="step-text">Зафиксируйте полученный ответ в файл `lab6_response.txt`.</div></div>
+                <div class="step"><div class="step-number">17</div><div class="step-text">Запишите количество входных и выходных токенов.</div></div>
+                <div class="step"><div class="step-number">18</div><div class="step-text">Создайте файл `temperature_experiment.py` с кодом из примера ниже.</div></div>
+                <div class="step"><div class="step-number">19</div><div class="step-text"><div class="code-block">
+import anthropic<br>
+from config import ANTHROPIC_API_KEY<br><br>
+client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)<br><br>
+PROMPT = "Придумайте короткий креативный заголовок для статьи об ИИ"<br>
+TEMPERATURES = [0.0, 0.5, 1.0]<br><br>
+for temp in TEMPERATURES:<br>
+    print(f"\nТемпература = {temp}")<br>
+    for i in range(3):<br>
+        response = client.messages.create(<br>
+            model="claude-3-haiku-20240307",<br>
+            max_tokens=50,<br>
+            temperature=temp,<br>
+            messages=[{"role": "user", "content": PROMPT}]<br>
+        )<br>
+        print(f"  {i+1}: {response.content[0].text}")
+                </div></div></div>
+                <div class="step"><div class="step-number">20</div><div class="step-text">Сохраните файл и запустите: `python temperature_experiment.py`.</div></div>
+                <div class="step"><div class="step-number">21</div><div class="step-text">Зафиксируйте полученные заголовки в файл `lab6_temperature_results.txt`.</div></div>
+                <div class="step"><div class="step-number">22</div><div class="step-text">Запишите, сколько уникальных ответов получено при temperature = 0.0.</div></div>
+                <div class="step"><div class="step-number">23</div><div class="step-text">Запишите, сколько уникальных ответов получено при temperature = 0.5.</div></div>
+                <div class="step"><div class="step-number">24</div><div class="step-text">Запишите, сколько уникальных ответов получено при temperature = 1.0.</div></div>
+                <div class="step"><div class="step-number">25</div><div class="step-text">Сделайте вывод о влиянии температуры на разнообразие ответов.</div></div>
+                <div class="step"><div class="step-number">26</div><div class="step-text">Создайте файл `chat_session.py` для диалоговой сессии.</div></div>
+                <div class="step"><div class="step-number">27</div><div class="step-text">Реализуйте функцию `chat_with_claude()`, сохраняющую историю диалога.</div></div>
+                <div class="step"><div class="step-number">28</div><div class="step-text">Напишите цикл для обмена сообщениями с Claude (минимум 5 сообщений).</div></div>
+                <div class="step"><div class="step-number">29</div><div class="step-text">Убедитесь, что модель «помнит» предыдущие сообщения.</div></div>
+                <div class="step"><div class="step-number">30</div><div class="step-text">Оформите отчёт с листингами кода и результатами экспериментов.</div></div>
+            </div>
+            <div class="questions-container">
+                <h3>📝 Контрольные вопросы для отчёта</h3>
+                <ol>
+                    <li>Какой параметр отвечает за детерминированность ответов?</li>
+                    <li>Что произойдёт, если в API-ключе допустить ошибку?</li>
+                    <li>Как температура влияет на разнообразие ответов?</li>
+                    <li>Почему необходимо передавать всю историю диалога при каждом запросе?</li>
+                    <li>Какой вывод можно сделать о работе с Claude API?</li>
+                </ol>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

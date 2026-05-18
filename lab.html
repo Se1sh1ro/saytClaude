@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторные работы | Claude API Course</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); min-height: 100vh; color: #fff; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        header { padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; background: rgba(15, 12, 41, 0.95); }
+        header .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .logo { display: flex; align-items: center; gap: 12px; }
+        .logo i { font-size: 2.2rem; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .logo h1 { font-size: 1.5rem; font-weight: 700; }
+        .logo p { font-size: 0.7rem; opacity: 0.7; }
+        nav ul { display: flex; list-style: none; gap: 2rem; }
+        nav a { color: #fff; text-decoration: none; font-weight: 500; transition: all 0.3s; }
+        nav a:hover { color: #a78bfa; }
+        nav a.active { color: #a78bfa; position: relative; }
+        nav a.active::after { content: ''; position: absolute; bottom: -8px; left: 0; width: 100%; height: 2px; background: linear-gradient(135deg, #667eea, #764ba2); }
+        
+        .page-header { text-align: center; padding: 40px 0 30px; }
+        .page-header h1 { font-size: 2.5rem; background: linear-gradient(135deg, #fff, #a78bfa); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .page-header p { opacity: 0.7; margin-top: 10px; }
+        
+        .labs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px; padding: 20px 0 60px; }
+        .lab-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-radius: 20px; padding: 25px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s; }
+        .lab-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.08); border-color: rgba(102,126,234,0.4); }
+        .lab-number { width: 50px; height: 50px; background: linear-gradient(135deg, #f093fb, #f5576c); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem; margin-bottom: 15px; }
+        .lab-card h3 { font-size: 1.2rem; margin-bottom: 10px; }
+        .lab-card p { opacity: 0.7; line-height: 1.5; margin-bottom: 15px; font-size: 0.9rem; }
+        .lecture-ref { display: inline-block; background: rgba(102,126,234,0.2); padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; margin-bottom: 15px; }
+        .lecture-ref i { margin-right: 5px; }
+        .btn-lab { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; text-decoration: none; border-radius: 25px; font-weight: 600; font-size: 0.85rem; transition: all 0.3s; }
+        .btn-lab:hover { transform: translateX(5px); box-shadow: 0 5px 15px rgba(102,126,234,0.4); }
+        
+        footer { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; }
+        @media (max-width: 768px) { header .container { flex-direction: column; text-align: center; } nav ul { justify-content: center; gap: 1.5rem; } .labs-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+             <div class="logo"><i class="fas fa-brain"></i><div><h1>Claude API Курс</h1></div></div>
+            <nav><ul><li><a href="index.html">Главная</a></li><li><a href="lect.html">Лекции</a></li><li><a href="lab.html" class="active">Лабораторные</a></li><li><a href="test.html">Тест</a></li></ul></nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <div class="page-header">
+                <h1>💻 Лабораторные работы</h1>
+                <p>8 практических работ для изучения Claude API (каждая привязана к лекциям)</p>
+            </div>
+            <div class="labs-grid">
+                
+                <div class="lab-card">
+                    <div class="lab-number">№1</div>
+                    <span class="lecture-ref"><i class="fas fa-book-open"></i> Лекция №1</span>
+                    <h3>Изучение интерфейса Claude Web</h3>
+                    <p>Регистрация, знакомство с Claude.ai, тестирование различных типов промптов, анализ памяти между диалогами.</p>
+                    <a href="lab1.html" class="btn-lab"><i class="fas fa-arrow-right"></i> Перейти к работе</a>
+                </div>
+                
+                <div class="lab-card">
+                    <div class="lab-number">№2</div>
+                    <span class="lecture-ref"><i class="fas fa-book-open"></i> Лекция №1</span>
+                    <h3>Углублённое изучение возможностей Claude Web</h3>
+                    <p>Работа с уточняющими вопросами, сокращение текста, перевод на разные языки, изменение стиля ответов.</p>
+                    <a href="lab2.html" class="btn-lab"><i class="fas fa-arrow-right"></i> Перейти к работе</a>
+                </div>
+                
+                <div class="lab-card">
+                    <div class="lab-number">№3</div>
+                    <span class="lecture-ref"><i class="fas fa-book-open"></i> Лекция №2</span>
+                    <h3>Анализ больших документов (PDF)</h3>
+                    <p>Загрузка PDF-файлов, суммаризация, частотный анализ, извлечение цитат, феномен "потерянного в середине".</p>
+                    <a href="lab3.html" class="btn-lab"><i class="fas fa-arrow-right"></i> Перейти к работе</a>
+                </div>
+                
+                <div class="lab-card">
+                    <div class="lab-number">№4</div>
+                    <span class="lecture-ref"><i class="fas fa-book-open"></i> Лекция №2</span>
+                    <h3>Обработка CSV и извлечение информации</h3>
+                    <p>Анализ табличных данных, вычисление средних значений, группировка, работа с пропущенными значениями.</p>
+                    <a href="lab4.html" class="btn-lab"><i class="fas fa-arrow-right"></i> Перейти к работе</a>
+                </div>
+                
+                <div class="lab-card">
+                    <div class="lab-number">№5</div>
+                    <span class="lecture-ref"><i class="fas fa-book-open"></i> Лекция №3</span>
+                    <h3>Тестирование этических ограничений</h3>
+                    <p>Анализ отказоустойчивости, проверка Constitutional AI, попытки обхода ограничений, оценка объяснительности отказов.</p>
+                    <a href="lab5.html" class="btn-lab"><i class="fas fa-arrow-right"></i> Перейти к работе</a>
+                </div>
+                
+                <div class="lab-card">
+                    <div class="lab-number">№6</div>
+                    <span class="lecture-ref"><i class="fas fa-book-open"></i> Лекция №4</span>
+                    <h3>Программное взаимодействие с API Claude</h3>
+                    <p>Установка библиотеки anthropic, первый запрос к API, эксперимент с параметром temperature.</p>
+                    <a href="lab6.html" class="btn-lab"><i class="fas fa-arrow-right"></i> Перейти к работе</a>
+                </div>
+                
+                <div class="lab-card">
+                    <div class="lab-number">№7</div>
+                    <span class="lecture-ref"><i class="fas fa-book-open"></i> Лекция №5</span>
+                    <h3>Системные промпты и Chain-of-Thought</h3>
+                    <p>Задание ролевого поведения, управление стилем, метод цепочки рассуждений для логических задач.</p>
+                    <a href="lab7.html" class="btn-lab"><i class="fas fa-arrow-right"></i> Перейти к работе</a>
+                </div>
+                
+                <div class="lab-card">
+                    <div class="lab-number">№8</div>
+                    <span class="lecture-ref"><i class="fas fa-book-open"></i> Лекция №6</span>
+                    <h3>Claude в программной инженерии</h3>
+                    <p>Генерация кода по описанию, написание unit-тестов, поиск ошибок, рефакторинг, документирование.</p>
+                    <a href="lab8.html" class="btn-lab"><i class="fas fa-arrow-right"></i> Перейти к работе</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+</body>
+</html>

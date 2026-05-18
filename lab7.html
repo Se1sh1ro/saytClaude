@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторная работа №7 | Claude API Course</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); min-height: 100vh; color: #fff; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        
+        header { padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; background: rgba(15, 12, 41, 0.95); }
+        header .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; max-width: 1200px; }
+        .logo { display: flex; align-items: center; gap: 12px; }
+        .logo i { font-size: 2.2rem; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .logo h1 { font-size: 1.5rem; font-weight: 700; }
+        .logo p { font-size: 0.7rem; opacity: 0.7; }
+        nav ul { display: flex; list-style: none; gap: 2rem; }
+        nav a { color: #fff; text-decoration: none; font-weight: 500; transition: all 0.3s; }
+        nav a:hover { color: #a78bfa; }
+        
+        .lab-header { text-align: center; padding: 40px 0 20px; }
+        .lab-header h1 { font-size: 2rem; background: linear-gradient(135deg, #fff, #f093fb); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .lecture-ref { text-align: center; margin-bottom: 30px; }
+        .lecture-ref a { color: #f093fb; text-decoration: none; }
+        .lecture-ref a:hover { text-decoration: underline; }
+        .steps-container { background: rgba(255,255,255,0.05); border-radius: 20px; padding: 30px; margin-bottom: 40px; }
+        .step { display: flex; gap: 15px; margin-bottom: 15px; padding: 10px; border-radius: 10px; transition: background 0.3s; }
+        .step:hover { background: rgba(255,255,255,0.05); }
+        .step-number { width: 35px; height: 35px; background: linear-gradient(135deg, #f093fb, #f5576c); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; }
+        .step-text { flex: 1; line-height: 1.5; }
+        .questions-container { background: rgba(255,255,255,0.03); border-radius: 20px; padding: 30px; margin-top: 20px; border-left: 3px solid #f093fb; }
+        .questions-container h3 { margin-bottom: 20px; color: #f093fb; }
+        .questions-container li { margin: 10px 0 10px 25px; }
+        footer { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; }
+        .back-link { display: inline-block; margin-bottom: 20px; color: #a78bfa; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+        @media (max-width: 768px) { 
+            header .container { flex-direction: column; text-align: center; } 
+            nav ul { justify-content: center; gap: 1.5rem; } 
+            .step { flex-direction: column; align-items: flex-start; } 
+            .step-number { margin-bottom: 5px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+             <div class="logo"><i class="fas fa-brain"></i><div><h1>Claude API Курс</h1></div></div>
+           <nav><ul><li><a href="index.html">Главная</a></li><li><a href="lect.html">Лекции</a></li><li><a href="lab.html">Лабораторные</a></li><li><a href="test.html">Тест</a></li></ul></nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <a href="lab.html" class="back-link">← Назад к списку лабораторных работ</a>
+            <div class="lab-header">
+                <h1>Лабораторная работа №7</h1>
+            </div>
+            <div class="lecture-ref">
+                <i class="fas fa-book-open"></i> Соответствует лекции: 
+                <a href="lect.html#lecture5">Лекция №5 — Продвинутые техники конструирования промптов для моделей Claude</a>
+            </div>
+            <div class="steps-container">
+                <h2 style="margin-bottom: 25px; text-align: center;">🎯 30 шагов выполнения</h2>
+                <div class="step"><div class="step-number">1</div><div class="step-text">Откройте Claude.ai и создайте новый диалог.</div></div>
+                <div class="step"><div class="step-number">2</div><div class="step-text">Задайте системный промпт: «Вы — профессор астрофизики. Отвечайте строго научно, используя специальную терминологию».</div></div>
+                <div class="step"><div class="step-number">3</div><div class="step-text">Задайте вопрос: «Что такое чёрная дыра?».</div></div>
+                <div class="step"><div class="step-number">4</div><div class="step-text">Зафиксируйте ответ в файл `lab7_professor.txt`.</div></div>
+                <div class="step"><div class="step-number">5</div><div class="step-text">Создайте новый диалог.</div></div>
+                <div class="step"><div class="step-number">6</div><div class="step-text">Задайте системный промпт: «Вы — саркастичный учитель математики. Отвечайте коротко, с иронией».</div></div>
+                <div class="step"><div class="step-number">7</div><div class="step-text">Задайте вопрос: «Почему 2 + 2 = 4?».</div></div>
+                <div class="step"><div class="step-number">8</div><div class="step-text">Зафиксируйте ответ в файл `lab7_sarcastic.txt`.</div></div>
+                <div class="step"><div class="step-number">9</div><div class="step-text">Создайте новый диалог.</div></div>
+                <div class="step"><div class="step-number">10</div><div class="step-text">Задайте системный промпт: «Вы — добрый детский педагог. Объясняйте очень подробно, с энтузиазмом».</div></div>
+                <div class="step"><div class="step-number">11</div><div class="step-text">Задайте тот же вопрос: «Почему 2 + 2 = 4?».</div></div>
+                <div class="step"><div class="step-number">12</div><div class="step-text">Зафиксируйте ответ в файл `lab7_kind.txt`.</div></div>
+                <div class="step"><div class="step-number">13</div><div class="step-text">Сравните длину, лексику и тональность всех трёх ответов.</div></div>
+                <div class="step"><div class="step-number">14</div><div class="step-text">Создайте новый диалог.</div></div>
+                <div class="step"><div class="step-number">15</div><div class="step-text">Задайте задачу без CoT: «У Марии было 12 яблок. Она отдала 5 яблок Петру, затем получила от Анны в три раза больше яблок, чем у неё осталось. Сколько яблок стало у Марии?»</div></div>
+                <div class="step"><div class="step-number">16</div><div class="step-text">Зафиксируйте ответ в файл `lab7_no_cot1.txt`.</div></div>
+                <div class="step"><div class="step-number">17</div><div class="step-text">Создайте новый диалог.</div></div>
+                <div class="step"><div class="step-number">18</div><div class="step-text">Задайте ту же задачу с CoT: «Решите задачу, записывая промежуточные шаги рассуждения. У Марии было 12 яблок. Она отдала 5 яблок Петру, затем получила от Анны в три раза больше яблок, чем у неё осталось. Сколько яблок стало у Марии?»</div></div>
+                <div class="step"><div class="step-number">19</div><div class="step-text">Зафиксируйте ответ в файл `lab7_with_cot1.txt`.</div></div>
+                <div class="step"><div class="step-number">20</div><div class="step-text">Сравните правильность ответов: с CoT и без CoT.</div></div>
+                <div class="step"><div class="step-number">21</div><div class="step-text">Создайте новый диалог.</div></div>
+                <div class="step"><div class="step-number">22</div><div class="step-text">Задайте логическую задачу без CoT: «Аня выше Бори, но ниже Вики. Галя выше Ани. Денис ниже Вики, но выше Гали. Кто самый высокий?»</div></div>
+                <div class="step"><div class="step-number">23</div><div class="step-text">Зафиксируйте ответ в файл `lab7_no_cot2.txt`.</div></div>
+                <div class="step"><div class="step-number">24</div><div class="step-text">Создайте новый диалог.</div></div>
+                <div class="step"><div class="step-number">25</div><div class="step-text">Задайте ту же задачу с CoT: «Решите задачу, записывая рассуждения по шагам. Аня выше Бори, но ниже Вики. Галя выше Ани. Денис ниже Вики, но выше Гали. Кто самый высокий?»</div></div>
+                <div class="step"><div class="step-number">26</div><div class="step-text">Зафиксируйте ответ в файл `lab7_with_cot2.txt`.</div></div>
+                <div class="step"><div class="step-number">27</div><div class="step-text">Сравните правильность ответов на логическую задачу.</div></div>
+                <div class="step"><div class="step-number">28</div><div class="step-text">Создайте таблицу сравнения: задача, ответ без CoT, ответ с CoT, правильность.</div></div>
+                <div class="step"><div class="step-number">29</div><div class="step-text">Сделайте вывод о эффективности CoT для разных типов задач.</div></div>
+                <div class="step"><div class="step-number">30</div><div class="step-text">Оформите отчёт с выводами о влиянии системных промптов и CoT.</div></div>
+            </div>
+            <div class="questions-container">
+                <h3>📝 Контрольные вопросы для отчёта</h3>
+                <ol>
+                    <li>Как системные промпты влияют на стиль ответов модели?</li>
+                    <li>Для каких задач CoT даёт наибольший прирост точности?</li>
+                    <li>Почему CoT помогает решать логические задачи?</li>
+                    <li>Какие XML-теги рекомендуются для CoT в Claude?</li>
+                    <li>Какой вывод можно сделать о продвинутых техниках промптинга?</li>
+                </ol>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

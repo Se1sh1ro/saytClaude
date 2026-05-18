@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторная работа №8 | Claude API Course</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); min-height: 100vh; color: #fff; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        
+        header { padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; background: rgba(15, 12, 41, 0.95); }
+        header .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; max-width: 1200px; }
+        .logo { display: flex; align-items: center; gap: 12px; }
+        .logo i { font-size: 2.2rem; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .logo h1 { font-size: 1.5rem; font-weight: 700; }
+        .logo p { font-size: 0.7rem; opacity: 0.7; }
+        nav ul { display: flex; list-style: none; gap: 2rem; }
+        nav a { color: #fff; text-decoration: none; font-weight: 500; transition: all 0.3s; }
+        nav a:hover { color: #a78bfa; }
+        
+        .lab-header { text-align: center; padding: 40px 0 20px; }
+        .lab-header h1 { font-size: 2rem; background: linear-gradient(135deg, #fff, #f093fb); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .lecture-ref { text-align: center; margin-bottom: 30px; }
+        .lecture-ref a { color: #f093fb; text-decoration: none; }
+        .lecture-ref a:hover { text-decoration: underline; }
+        .steps-container { background: rgba(255,255,255,0.05); border-radius: 20px; padding: 30px; margin-bottom: 40px; }
+        .step { display: flex; gap: 15px; margin-bottom: 15px; padding: 10px; border-radius: 10px; transition: background 0.3s; }
+        .step:hover { background: rgba(255,255,255,0.05); }
+        .step-number { width: 35px; height: 35px; background: linear-gradient(135deg, #f093fb, #f5576c); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; }
+        .step-text { flex: 1; line-height: 1.5; }
+        .code-block { background: rgba(0,0,0,0.4); padding: 12px; border-radius: 10px; font-family: monospace; font-size: 0.85rem; margin: 10px 0; overflow-x: auto; }
+        .questions-container { background: rgba(255,255,255,0.03); border-radius: 20px; padding: 30px; margin-top: 20px; border-left: 3px solid #f093fb; }
+        .questions-container h3 { margin-bottom: 20px; color: #f093fb; }
+        .questions-container li { margin: 10px 0 10px 25px; }
+        footer { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; }
+        .back-link { display: inline-block; margin-bottom: 20px; color: #a78bfa; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+        @media (max-width: 768px) { 
+            header .container { flex-direction: column; text-align: center; } 
+            nav ul { justify-content: center; gap: 1.5rem; } 
+            .step { flex-direction: column; align-items: flex-start; } 
+            .step-number { margin-bottom: 5px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+             <div class="logo"><i class="fas fa-brain"></i><div><h1>Claude API Курс</h1></div></div>
+            <nav><ul><li><a href="index.html">Главная</a></li><li><a href="lect.html">Лекции</a></li><li><a href="lab.html">Лабораторные</a></li><li><a href="test.html">Тест</a></li></ul></nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <a href="lab.html" class="back-link">← Назад к списку лабораторных работ</a>
+            <div class="lab-header">
+                <h1>Лабораторная работа №8</h1>
+            </div>
+            <div class="lecture-ref">
+                <i class="fas fa-book-open"></i> Соответствует лекции: 
+                <a href="lect.html#lecture6">Лекция №6 — Прикладные аспекты применения Claude в бизнесе и образовании</a>
+            </div>
+            <div class="steps-container">
+                <h2 style="margin-bottom: 25px; text-align: center;">🎯 30 шагов выполнения</h2>
+                <div class="step"><div class="step-number">1</div><div class="step-text">Откройте Claude.ai и создайте новый диалог.</div></div>
+                <div class="step"><div class="step-number">2</div><div class="step-text">Введите промпт: «Напишите на Python функцию filter_and_transform, которая принимает список целых чисел и возвращает новый список, содержащий квадраты только чётных чисел. Функция должна содержать аннотации типов и docstring в формате Google. Добавьте комментарии к ключевым строкам».</div></div>
+                <div class="step"><div class="step-number">3</div><div class="step-text">Дождитесь ответа и скопируйте сгенерированный код в файл `lab8_filter_transform.py`.</div></div>
+                <div class="step"><div class="step-number">4</div><div class="step-text">Откройте среду разработки Python (IDLE, VS Code или Jupyter Notebook).</div></div>
+                <div class="step"><div class="step-number">5</div><div class="step-text">Создайте новый файл `test_filter.py` и вставьте скопированный код.</div></div>
+                <div class="step"><div class="step-number">6</div><div class="step-text">Добавьте в конец файла тестовый вызов: `print(filter_and_transform([1,2,3,4,5,6]))`.</div></div>
+                <div class="step"><div class="step-number">7</div><div class="step-text">Запустите файл: `python test_filter.py`.</div></div>
+                <div class="step"><div class="step-number">8</div><div class="step-text">Проверьте, что ожидаемый результат: `[4, 16, 36]`.</div></div>
+                <div class="step"><div class="step-number">9</div><div class="step-text">Если есть ошибки, скопируйте их в Claude и попросите исправить.</div></div>
+                <div class="step"><div class="step-number">10</div><div class="step-text">Вернитесь в диалог с Claude.</div></div>
+                <div class="step"><div class="step-number">11</div><div class="step-text">Введите промпт: «Напишите набор unit-тестов с использованием фреймворка unittest для функции filter_and_transform. Покройте как минимум: обычный случай, пустой список, список без чётных чисел, список с отрицательными числами».</div></div>
+                <div class="step"><div class="step-number">12</div><div class="step-text">Скопируйте сгенерированные тесты в файл `test_filter_unittest.py`.</div></div>
+                <div class="step"><div class="step-number">13</div><div class="step-text">Запустите тесты: `python -m unittest test_filter_unittest.py`.</div></div>
+                <div class="step"><div class="step-number">14</div><div class="step-text">Зафиксируйте, сколько тестов прошло успешно, в файл `lab8_test_results.txt`.</div></div>
+                <div class="step"><div class="step-number">15</div><div class="step-text">Вернитесь в диалог с Claude.</div></div>
+                <div class="step"><div class="step-number">16</div><div class="step-text">Введите код с ошибкой: «def find_max(numbers): max_num = 0; for num in numbers: if num > max_num: max_num = num; return max_num».</div></div>
+                <div class="step"><div class="step-number">17</div><div class="step-text">Попросите Claude: «Найдите ошибку в приведённой функции. Объясните, в чём заключается ошибка, и предложите исправленный код».</div></div>
+                <div class="step"><div class="step-number">18</div><div class="step-text">Зафиксируйте ответ Claude в файл `lab8_bug_fix.txt`.</div></div>
+                <div class="step"><div class="step-number">19</div><div class="step-text">Проверьте, обнаружил ли Claude проблему с инициализацией `max_num = 0`.</div></div>
+                <div class="step"><div class="step-number">20</div><div class="step-text">Скопируйте исправленный код и протестируйте на списке `[-5, -2, -8]`.</div></div>
+                <div class="step"><div class="step-number">21</div><div class="step-text">Вернитесь в диалог с Claude.</div></div>
+                <div class="step"><div class="step-number">22</div><div class="step-text">Предоставьте Claude фрагмент кода без комментариев (реализацию бинарного поиска).</div></div>
+                <div class="step"><div class="step-number">23</div><div class="step-text">Попросите: «Сгенерируйте подробную документацию для этого кода: описание функции, аргументы, возвращаемое значение, пример использования, асимптотическую сложность».</div></div>
+                <div class="step"><div class="step-number">24</div><div class="step-text">Скопируйте сгенерированную документацию в файл `lab8_documentation.txt`.</div></div>
+                <div class="step"><div class="step-number">25</div><div class="step-text">Оцените полноту и точность документации.</div></div>
+                <div class="step"><div class="step-number">26</div><div class="step-text">Вернитесь в диалог с Claude.</div></div>
+                <div class="step"><div class="step-number">27</div><div class="step-text">Предложите Claude неоптимальный код (с вложенными циклами, избыточными переменными).</div></div>
+                <div class="step"><div class="step-number">28</div><div class="step-text">Попросите: «Предложите рефакторинг этого кода для улучшения читаемости и производительности. Объясните каждое изменение».</div></div>
+                <div class="step"><div class="step-number">29</div><div class="step-text">Скопируйте исходный и рефакторированный код в файл `lab8_refactoring.txt`.</div></div>
+                <div class="step"><div class="step-number">30</div><div class="step-text">Оформите отчёт с выводами о способности Claude генерировать, тестировать и улучшать код.</div></div>
+            </div>
+            <div class="questions-container">
+                <h3>📝 Контрольные вопросы для отчёта</h3>
+                <ol>
+                    <li>Насколько качественно Claude сгенерировал функцию по описанию?</li>
+                    <li>Все ли тесты прошли успешно?</li>
+                    <li>Обнаружил ли Claude ошибку в коде?</li>
+                    <li>Насколько полезна сгенерированная документация?</li>
+                    <li>Улучшил ли Claude код в результате рефакторинга?</li>
+                </ol>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

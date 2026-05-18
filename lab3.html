@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторная работа №3 | Claude API Course</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); min-height: 100vh; color: #fff; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        
+        header { padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; background: rgba(15, 12, 41, 0.95); }
+        header .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; max-width: 1200px; }
+        .logo { display: flex; align-items: center; gap: 12px; }
+        .logo i { font-size: 2.2rem; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .logo h1 { font-size: 1.5rem; font-weight: 700; }
+        .logo p { font-size: 0.7rem; opacity: 0.7; }
+        nav ul { display: flex; list-style: none; gap: 2rem; }
+        nav a { color: #fff; text-decoration: none; font-weight: 500; transition: all 0.3s; }
+        nav a:hover { color: #a78bfa; }
+        
+        .lab-header { text-align: center; padding: 40px 0 20px; }
+        .lab-header h1 { font-size: 2rem; background: linear-gradient(135deg, #fff, #f093fb); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .lecture-ref { text-align: center; margin-bottom: 30px; }
+        .lecture-ref a { color: #f093fb; text-decoration: none; }
+        .lecture-ref a:hover { text-decoration: underline; }
+        .steps-container { background: rgba(255,255,255,0.05); border-radius: 20px; padding: 30px; margin-bottom: 40px; }
+        .step { display: flex; gap: 15px; margin-bottom: 15px; padding: 10px; border-radius: 10px; transition: background 0.3s; }
+        .step:hover { background: rgba(255,255,255,0.05); }
+        .step-number { width: 35px; height: 35px; background: linear-gradient(135deg, #f093fb, #f5576c); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; }
+        .step-text { flex: 1; line-height: 1.5; }
+        .questions-container { background: rgba(255,255,255,0.03); border-radius: 20px; padding: 30px; margin-top: 20px; border-left: 3px solid #f093fb; }
+        .questions-container h3 { margin-bottom: 20px; color: #f093fb; }
+        .questions-container li { margin: 10px 0 10px 25px; }
+        footer { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; }
+        .back-link { display: inline-block; margin-bottom: 20px; color: #a78bfa; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+        @media (max-width: 768px) { 
+            header .container { flex-direction: column; text-align: center; } 
+            nav ul { justify-content: center; gap: 1.5rem; } 
+            .step { flex-direction: column; align-items: flex-start; } 
+            .step-number { margin-bottom: 5px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+             <div class="logo"><i class="fas fa-brain"></i><div><h1>Claude API Курс</h1></div></div>
+            <nav><ul><li><a href="index.html">Главная</a></li><li><a href="lect.html">Лекции</a></li><li><a href="lab.html">Лабораторные</a></li><li><a href="test.html">Тест</a></li></ul></nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <a href="lab.html" class="back-link">← Назад к списку лабораторных работ</a>
+            <div class="lab-header">
+                <h1>Лабораторная работа №3</h1>
+            </div>
+            <div class="lecture-ref">
+                <i class="fas fa-book-open"></i> Соответствует лекции: 
+                <a href="lect.html#lecture2">Лекция №2 — Аналитические возможности Claude: работа с большими контекстами и документами</a>
+            </div>
+            <div class="steps-container">
+                <h2 style="margin-bottom: 25px; text-align: center;">🎯 30 шагов выполнения</h2>
+                <div class="step"><div class="step-number">1</div><div class="step-text">Откройте браузер и перейдите на сайт https://claude.ai.</div></div>
+                <div class="step"><div class="step-number">2</div><div class="step-text">Войдите в свою учётную запись.</div></div>
+                <div class="step"><div class="step-number">3</div><div class="step-text">Откройте новую вкладку и найдите сайт с бесплатными электронными книгами (например, https://ilibrary.ru).</div></div>
+                <div class="step"><div class="step-number">4</div><div class="step-text">Скачайте произведение объёмом не менее 100 страниц в формате PDF (например, «Евгений Онегин» А.С. Пушкина).</div></div>
+                <div class="step"><div class="step-number">5</div><div class="step-text">Убедитесь, что размер файла не превышает 30 МБ.</div></div>
+                <div class="step"><div class="step-number">6</div><div class="step-text">Вернитесь на вкладку Claude.ai.</div></div>
+                <div class="step"><div class="step-number">7</div><div class="step-text">Создайте новый диалог, нажав «New Chat».</div></div>
+                <div class="step"><div class="step-number">8</div><div class="step-text">Нажмите кнопку загрузки файлов (иконка скрепки).</div></div>
+                <div class="step"><div class="step-number">9</div><div class="step-text">Выберите скачанный PDF-файл в диалоговом окне.</div></div>
+                <div class="step"><div class="step-number">10</div><div class="step-text">Дождитесь окончания загрузки и обработки файла (появится уведомление).</div></div>
+                <div class="step"><div class="step-number">11</div><div class="step-text">Введите промпт: «Сделайте краткое содержание загруженного произведения по главам. Если главы отсутствуют, разбейте текст на смысловые блоки по 10-15 страниц. Каждый блок озаглавьте и укажите 2-3 ключевых события».</div></div>
+                <div class="step"><div class="step-number">12</div><div class="step-text">Нажмите Enter и дождитесь ответа.</div></div>
+                <div class="step"><div class="step-number">13</div><div class="step-text">Скопируйте полученное содержание в файл `lab3_summary.txt`.</div></div>
+                <div class="step"><div class="step-number">14</div><div class="step-text">В том же диалоге введите промпт: «Подсчитайте частоту упоминаний следующих имён/терминов: (укажите 3-4 ключевых персонажа выбранного произведения). Выдайте результат в форме таблицы: слово — количество упоминаний — пример контекста (одно предложение)».</div></div>
+                <div class="step"><div class="step-number">15</div><div class="step-text">Дождитесь ответа и скопируйте его в файл `lab3_frequency.txt`.</div></div>
+                <div class="step"><div class="step-number">16</div><div class="step-text">Откройте PDF-файл в программе для чтения PDF.</div></div>
+                <div class="step"><div class="step-number">17</div><div class="step-text">Вручную подсчитайте частоту упоминаний тех же слов на первых 10 страницах.</div></div>
+                <div class="step"><div class="step-number">18</div><div class="step-text">Сравните ручной подсчёт с результатами Claude, зафиксируйте расхождения.</div></div>
+                <div class="step"><div class="step-number">19</div><div class="step-text">В диалоге с Claude введите вопрос: «Что произошло на первых пяти страницах?».</div></div>
+                <div class="step"><div class="step-number">20</div><div class="step-text">Зафиксируйте ответ в файл `lab3_beginning.txt`.</div></div>
+                <div class="step"><div class="step-number">21</div><div class="step-text">Введите вопрос: «Какое ключевое событие описано на страницах в середине произведения (примерно 40-50 страницы)?».</div></div>
+                <div class="step"><div class="step-number">22</div><div class="step-text">Зафиксируйте ответ в файл `lab3_middle.txt`.</div></div>
+                <div class="step"><div class="step-number">23</div><div class="step-text">Введите вопрос: «Чем заканчивается произведение?».</div></div>
+                <div class="step"><div class="step-number">24</div><div class="step-text">Зафиксируйте ответ в файл `lab3_end.txt`.</div></div>
+                <div class="step"><div class="step-number">25</div><div class="step-text">Сравните полноту ответов на вопросы о начале, середине и конце документа.</div></div>
+                <div class="step"><div class="step-number">26</div><div class="step-text">В диалоге введите промпт: «Приведите три прямые цитаты из документа, которые наиболее полно характеризуют главного героя. Укажите страницу (или приблизительную позицию) для каждой цитаты».</div></div>
+                <div class="step"><div class="step-number">27</div><div class="step-text">Дождитесь ответа и скопируйте цитаты в файл `lab3_quotes.txt`.</div></div>
+                <div class="step"><div class="step-number">28</div><div class="step-text">Вручную проверьте, действительно ли приведённые цитаты присутствуют в тексте.</div></div>
+                <div class="step"><div class="step-number">29</div><div class="step-text">Проверьте соответствие указанных позиций цитатам.</div></div>
+                <div class="step"><div class="step-number">30</div><div class="step-text">Оформите отчёт с выводами о точности Claude при работе с большими документами и о феномене «потерянного в середине».</div></div>
+            </div>
+            <div class="questions-container">
+                <h3>📝 Контрольные вопросы для отчёта</h3>
+                <ol>
+                    <li>Справился ли Claude с суммаризацией длинного документа?</li>
+                    <li>Насколько точен был подсчёт частоты упоминаний?</li>
+                    <li>Проявился ли феномен «потерянного в середине» при ответах на вопросы?</li>
+                    <li>Были ли цитаты извлечены корректно?</li>
+                    <li>Какой вывод можно сделать о работе Claude с большими документами?</li>
+                </ol>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
